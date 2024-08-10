@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /
+  port: 10080
+
+kakao:
+  apikey: 8faed6b62733ecf33cfcbc9b78224a2c
