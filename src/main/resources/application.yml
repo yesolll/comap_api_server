@@ -4,5 +4,4 @@ server:
   port: 10080
 
 kakao:
-  rest-api-host: https://dapi.kakao.com/
-  rest-api-key: 8faed6b62733ecf33cfcbc9b78224a2c
+  apikey: 8faed6b62733ecf33cfcbc9b78224a2c
