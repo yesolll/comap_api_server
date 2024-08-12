@@ -1,4 +1,4 @@
-package com.yesolll.comap_api_server.domain.place;
+package com.yesolll.comap_api_server.domain.place.controller;
 
 import com.yesolll.comap_api_server.util.service.KakaoService;
 import lombok.RequiredArgsConstructor;
