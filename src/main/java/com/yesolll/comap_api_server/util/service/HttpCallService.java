@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class HttpCallService {
 
     public String Call(String method, String reqURL, String header, String param) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             String response = "";
             if(param != null) reqURL += param;
@@ -37,7 +37,7 @@ public class HttpCallService {
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             while ((line = br.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
             System.out.println("response body : " + result);
 
@@ -46,7 +46,7 @@ public class HttpCallService {
             throw new RuntimeException(e);
         }
 
-        return result;
+        return result.toString();
     }
 
     public String CallwithToken(String method, String reqURL, String access_Token) {
