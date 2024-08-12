@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -43,11 +42,10 @@ public class HttpCallService {
             System.out.println("response body : " + result);
 
             br.close();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return result;
     }
 
