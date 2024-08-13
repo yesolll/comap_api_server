@@ -1,4 +1,4 @@
-package com.yesolll.comap_api_server.util.service;
+package com.yesolll.comap_api_server.util.service.openApi;
 
 import org.springframework.stereotype.Service;
 

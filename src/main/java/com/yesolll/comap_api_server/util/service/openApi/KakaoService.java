@@ -1,4 +1,4 @@
-package com.yesolll.comap_api_server.util.service;
+package com.yesolll.comap_api_server.util.service.openApi;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
