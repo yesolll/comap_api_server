@@ -1,7 +1,7 @@
 package com.yesolll.comap_api_server.domain.place.service;
 
 import com.yesolll.comap_api_server.domain.place.repository.PlaceRepository;
-import com.yesolll.comap_api_server.util.service.KakaoService;
+import com.yesolll.comap_api_server.util.service.openApi.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
