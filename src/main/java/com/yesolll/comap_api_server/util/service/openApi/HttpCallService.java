@@ -1,5 +1,6 @@
 package com.yesolll.comap_api_server.util.service.openApi;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -7,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+@Slf4j
 @Service
 public class HttpCallService {
 
@@ -15,31 +17,27 @@ public class HttpCallService {
         try {
             String response = "";
             if(param != null) reqURL += param;
+
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
             conn.setRequestProperty("Authorization", header);
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("{}", String.format("Method: %s | RequestURL: %s \n", method, reqURL));
 
-            System.out.println("reqURL : " + reqURL);
-            System.out.println("method : " + method);
-            System.out.println("Authorization : " + header);
             InputStream stream = conn.getErrorStream();
             if (stream != null) {
                 try (Scanner scanner = new Scanner(stream)) {
                     scanner.useDelimiter("\\Z");
                     response = scanner.next();
                 }
-                System.out.println("error response : " + response);
+                log.info("{}", String.format("Error response: %s \n", response));
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             while ((line = br.readLine()) != null) {
                 result.append(line);
             }
-            System.out.println("response body : " + result);
 
             br.close();
         } catch (IOException e) {

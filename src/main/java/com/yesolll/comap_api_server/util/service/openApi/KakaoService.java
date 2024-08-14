@@ -17,13 +17,13 @@ public class KakaoService {
     @Value("${kakao.rest-api-host}")
     private String KAKAO_API_HOST;
 
-    public String getPlacesByCategory() {
-        String uri = KAKAO_API_HOST + "/v2/local/search/category.json";
+    public String getPlacesByCategory(String param) {
+        String uri = KAKAO_API_HOST + "/v2/local/search/category";
         return httpCallService.CallwithToken(
                 HttpMethod.GET.name(),
                 uri,
                 REST_API_KEY,
-                "?category_group_code=FD6" // TODO
+                param
         );
     }
 
