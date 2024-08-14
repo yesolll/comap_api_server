@@ -2,6 +2,8 @@ package com.yesolll.comap_api_server.util;
 
 import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class UriCreator<E> {
@@ -14,7 +16,11 @@ public class UriCreator<E> {
             field.setAccessible(true);
             Object value = field.get(dto);
             if (value != null) {
-                uriBuilder.append(CaseConverter.camelToSnake(field.getName())).append("=").append(value.toString()).append("&");
+                uriBuilder
+                        .append(CaseConverter.camelToSnake(field.getName()))
+                        .append("=")
+                        .append(URLEncoder.encode(value.toString(), StandardCharsets.UTF_8))
+                        .append("&");
             }
         }
 

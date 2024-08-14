@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 public class SearchPlaceDto {
 
+    private String query;
     private String categoryGroupCode; // TODO enum
     private String x;
     private String y;

@@ -20,7 +20,10 @@ public class PlaceService {
 
     public KakaoApiResponseDto searchPlacesByCategory(SearchPlaceDto searchPlaceDto) throws IllegalAccessException {
         String queryParam = uriCreator.makeQueryParam(searchPlaceDto);
-        String kakaoResponse = CaseConverter.snakeToCamel(kakaoService.getPlacesByCategory(queryParam));
+        String kakaoResponse =
+                searchPlaceDto.getQuery().isBlank() ?
+                CaseConverter.snakeToCamel(kakaoService.getPlacesByCategory(queryParam)) :
+                CaseConverter.snakeToCamel(kakaoService.getPlacesByKeyword(queryParam));
 
         Gson gson = new Gson();
         KakaoApiResponseDto responseDto = gson.fromJson(kakaoResponse, KakaoApiResponseDto.class);

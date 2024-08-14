@@ -27,4 +27,14 @@ public class KakaoService {
         );
     }
 
+    public String getPlacesByKeyword(String param) {
+        String uri = KAKAO_API_HOST + "/v2/local/search/keyword";
+        return httpCallService.CallwithToken(
+                HttpMethod.GET.name(),
+                uri,
+                REST_API_KEY,
+                param
+        );
+    }
+
 }
