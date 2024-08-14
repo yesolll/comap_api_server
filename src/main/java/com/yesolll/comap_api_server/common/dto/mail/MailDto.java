@@ -11,6 +11,6 @@ public class MailDto {
 //    private String from;
     private String[] address;
     private String title;
-    private String content;
+    private String authId;
     private String template;
 }

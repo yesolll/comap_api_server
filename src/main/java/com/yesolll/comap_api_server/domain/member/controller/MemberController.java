@@ -29,8 +29,8 @@ public class MemberController {
         MailDto mailDto = new MailDto();
         mailDto.setAddress(new String[]{"ddorimeos@gmail.com"});
         mailDto.setTitle("회원가입 인증 메일");
-        mailDto.setContent("인증번호 입력하세요: 123456");
-        mailDto.setTemplate("");
+        mailDto.setAuthId("asdfasdf");
+        mailDto.setTemplate("joinMailTemplate");
 
         mailService.sendTemplateMessage(mailDto);
     }
@@ -38,6 +38,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity join(@Valid @RequestBody MemberJoinDto memberJoinDto) {
          Long newMemberId = memberService.saveMember(memberMapper.from(memberJoinDto));
+
 
         SingleResponseDto responseDto = SingleResponseDto.builder().build();
         return ResponseEntity.created(URI.create(newMemberId.toString())).body(responseDto); // TODO: Create Response URI

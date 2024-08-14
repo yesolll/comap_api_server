@@ -8,6 +8,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.HashMap;
 
@@ -15,7 +17,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class MailService {
     private final JavaMailSender emailSender;
-//    private final SpringTemplateEngine templateEngine;
+    private final SpringTemplateEngine templateEngine;
 
     public void sendTemplateMessage(MailDto mailDto) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
@@ -29,20 +31,20 @@ public class MailService {
         helper.setTo(mailDto.getAddress());
 
         //템플릿에 전달할 데이터 설정
-//        HashMap<String, String> emailValues = new HashMap<>();
-//        emailValues.put("name", "jimin");
+        HashMap<String, String> emailValues = new HashMap<>();
+        emailValues.put("authId", "asdf");
 
-//        Context context = new Context();
-//        emailValues.forEach((key, value) -> {
-//            context.setVariable(key, value);
-//        });
+        Context context = new Context();
+        emailValues.forEach((key, value) -> {
+            context.setVariable(key, value);
+        });
 
         //메일 내용 설정 : 템플릿 프로세스
-//        String html = templateEngine.process(mailDto.getTemplate(), context);
-        helper.setText(mailDto.getContent());
+        String html = templateEngine.process(mailDto.getTemplate(), context);
+        helper.setText(html);
 
         //템플릿에 들어가는 이미지 cid로 삽입
-//        helper.addInline("image1", new ClassPathResource("static/images/image-1.jpeg"));
+        helper.addInline("image", new ClassPathResource("static/images/image-1.jpeg"));
 
         //메일 보내기
         emailSender.send(message);
