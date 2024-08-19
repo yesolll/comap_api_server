@@ -4,10 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -18,4 +24,13 @@ public class Member {
 
     private String password;
 
+    @Builder.Default
+    private String status = "JOIN_WAITING"; // TODO: ENUM
+
+    public void updateMemberStatusToComplete(String status) {
+        this.status = switch (status) {
+            case "JOIN_WAITING", "PASSWORD_WAITING" -> "ACTIVE";
+            default -> status;
+        };
+    }
 }

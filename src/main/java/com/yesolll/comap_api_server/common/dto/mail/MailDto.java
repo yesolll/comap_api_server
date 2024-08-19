@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MailDto {
-//    private String from;
-    private String[] address;
+//    private String[] address; // TODO: 단체메일
+    private String address;
     private String title;
-    private String authId;
+    private String authKey;
     private String template;
 }
