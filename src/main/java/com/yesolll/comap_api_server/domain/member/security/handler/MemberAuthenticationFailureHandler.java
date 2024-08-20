@@ -1,14 +1,15 @@
 package com.yesolll.comap_api_server.domain.member.security.handler;
 
 import com.google.gson.Gson;
+import com.yesolll.comap_api_server.common.dto.SingleResponseDto;
+import com.yesolll.comap_api_server.common.enums.ResultCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
@@ -26,9 +27,16 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
 
     private void sendErrorResponse(HttpServletResponse response) throws IOException {
         // TODO ERROR RESPONSE
-//        Gson gson = new Gson();
+        Gson gson = new Gson();
+
+        SingleResponseDto responseDto
+                = new SingleResponseDto(
+                ResultCode.AUTH_FAILED.getMessage(),
+                ResultCode.AUTH_FAILED.getHttpCode());
+
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//        response.getWriter().write(gson.toJson(errorResponse, ErrorResponseDto.class));
+        response.getWriter().write(gson.toJson(responseDto));
     }
 }

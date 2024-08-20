@@ -5,11 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDto {
-    private Long memberId;
-    private String nickname;
-    private String accessToken;
+@AllArgsConstructor
+public class TokenRefreshDto {
     private String refreshToken;
 }

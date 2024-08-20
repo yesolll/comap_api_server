@@ -1,42 +1,38 @@
 package com.yesolll.comap_api_server.domain.member.security.handler;
 
-import java.io.IOException;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gson.Gson;
 import com.yesolll.comap_api_server.common.dto.SingleResponseDto;
 import com.yesolll.comap_api_server.common.enums.ResultCode;
 import com.yesolll.comap_api_server.domain.member.entity.Member;
+import com.yesolll.comap_api_server.domain.member.entity.MemberToken;
+import com.yesolll.comap_api_server.domain.member.repository.MemberTokenRepository;
 import com.yesolll.comap_api_server.domain.member.security.dto.LoginResponseDto;
 import com.yesolll.comap_api_server.domain.member.security.util.JWTTokenizer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import com.google.gson.Gson;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * 인증 성공 핸들러
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class MemberAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 
     private final JWTTokenizer tokenizer;
-    private final TokenRepository tokenRepository;
-
-    public MemberAuthenticationSuccessHandler(JWTTokenizer tokenizer, TokenRepository tokenRepository) {
-        this.tokenizer = tokenizer;
-        this.tokenRepository = tokenRepository;
-    }
+    private final MemberTokenRepository memberTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -52,15 +48,21 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         String refreshToken = delegateRefreshToken(member);
 
         Gson gson = new Gson();
-        LoginResponseDto memberInfo = new LoginResponseDto(member.getId(), member.getNickname());
+        LoginResponseDto memberInfo = new LoginResponseDto(
+                member.getId(),
+                member.getNickname(),
+                "Bearer " + accessToken,
+                refreshToken
+        );
         SingleResponseDto<LoginResponseDto> responseDto
                 = new SingleResponseDto<LoginResponseDto>(
                         memberInfo,
                         ResultCode.CREATE_COMPLETED.getMessage(),
                         ResultCode.CREATE_COMPLETED.getHttpCode());
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("RefreshToken", refreshToken);
+//        response.setHeader("Authorization", "Bearer " + accessToken);
+//        response.setHeader("RefreshToken", refreshToken);
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().write(gson.toJson(responseDto, SingleResponseDto.class));
@@ -91,12 +93,8 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     public void saveRefreshToken(Member member, String refreshToken, Date expirationDate) {
-        Token token = tokenRepository.findByMemberId(member.getId()).orElse(new Token());
-        token.setMember(member);
-        token.setRefreshToken(refreshToken);
-        token.setExpirationDate(expirationDate.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime());
-        tokenRepository.save(token);
+        MemberToken token = memberTokenRepository.findByMemberId(member.getId()).orElse(new MemberToken());
+        token.refresh(refreshToken, expirationDate);
+        memberTokenRepository.save(token);
     }
 }

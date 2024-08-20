@@ -1,6 +1,7 @@
 package com.yesolll.comap_api_server.domain.member.controller;
 
 import com.yesolll.comap_api_server.common.dto.SingleResponseDto;
+import com.yesolll.comap_api_server.common.enums.ResultCode;
 import com.yesolll.comap_api_server.domain.member.data.dto.MemberJoinDto;
 import com.yesolll.comap_api_server.domain.member.mapper.MemberMapper;
 import com.yesolll.comap_api_server.domain.member.service.MemberAuthService;
@@ -33,7 +34,12 @@ public class MemberController {
                     memberMapper.from(memberJoinDto), memberJoinDto.getEmail()
             );
 
-            SingleResponseDto responseDto = SingleResponseDto.builder().build();
+            SingleResponseDto responseDto
+                    = new SingleResponseDto(
+                    ResultCode.CREATE_COMPLETED.getMessage(),
+                    ResultCode.CREATE_COMPLETED.getHttpCode()
+            );
+
             return ResponseEntity.created(URI.create(newMemberId.toString())).body(responseDto); // TODO: Create Response URI
         } catch (Exception e) {
             log.info("TODO: 메일 보내기 예외처리");

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class MemberAuth {
 
     @Id
+    @Column(name = "MEMBER_AUTH_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

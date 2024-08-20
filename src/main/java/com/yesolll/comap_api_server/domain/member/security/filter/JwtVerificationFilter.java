@@ -8,14 +8,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -54,11 +49,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     // SecurityContextHolder 에 인증정보 저장
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
-        List<String> roles = TypeCastingUtils.objToList(claims.get("roles"), String.class);
+//        String username = (String) claims.get("username");
+//        List<String> roles = TypeCastingUtils.objToList(claims.get("roles"), String.class);
 //        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 }

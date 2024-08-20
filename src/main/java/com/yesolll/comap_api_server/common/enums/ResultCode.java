@@ -13,6 +13,8 @@ public enum ResultCode {
     PROCESS_COMPLETED(OK, "정상처리 되었습니다."),
     CREATE_COMPLETED(CREATED, "정상처리 되었습니다."),
     DELETE_COMPLETED(NO_CONTENT, "정상처리 되었습니다."),
+
+    AUTH_FAILED(UNAUTHORIZED, "사용자 인증에 실패하였습니다."),
     ;
 
     private final HttpStatus httpStatus;

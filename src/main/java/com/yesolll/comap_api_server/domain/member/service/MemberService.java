@@ -7,12 +7,15 @@ import com.yesolll.comap_api_server.util.KeyCreator;
 import com.yesolll.comap_api_server.util.service.mailSender.MailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+
+    private final PasswordEncoder passwordEncoder;
 
     private final MemberRepository memberRepository;
     private final MailService mailService;
@@ -24,9 +27,15 @@ public class MemberService {
 
     @Transactional
     public Long createMember(Member member, String email) {
+        encryptPassword(member);
         Member newMember = saveMember(member);
         sendAuthenticationMail(newMember.getId(), email);
         return newMember.getId();
+    }
+
+    private void encryptPassword(Member member) {
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.encryptPassword(encryptedPassword);
     }
 
     // TODO: Transaction Test

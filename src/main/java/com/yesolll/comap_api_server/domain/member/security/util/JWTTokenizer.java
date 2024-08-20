@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,8 @@ import java.util.Map;
  * JWT 생성 담당
  */
 @Component
+@RequiredArgsConstructor
 public class JWTTokenizer {
-
 
     @Getter
     @Value("${jwt.key}")
